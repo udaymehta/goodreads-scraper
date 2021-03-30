@@ -1,5 +1,4 @@
 # goodreads-scraper
----
 
 ## Description
 This is a goodreads scraper for [discord.py](https://github.com/Rapptz/discord.py) with no cogs, just a simple one file standalone bot made by - [UdayMehta](https://github.com/udaymehta).
