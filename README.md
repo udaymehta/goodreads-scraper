@@ -25,7 +25,3 @@ This is a goodreads scraper for [discord.py](https://github.com/Rapptz/discord.p
 
 ## License
 This project is licensed under the  GPL-3.0 License - see the LICENSE.md file for details
-
-## Need Help?
-Contact me on Discord - @Sedulous#5046
-
