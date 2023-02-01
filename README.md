@@ -1,7 +1,7 @@
 # goodreads-scraper
 
 ## Description
-This is a goodreads scraper for [discord.py](https://github.com/Rapptz/discord.py) with no cogs, just a simple one file standalone bot.
+This is a simple goodreads scraper made using [discord.py](https://github.com/Rapptz/discord.py).
 
 * This bot scrapes out:
   - title
@@ -10,7 +10,7 @@ This is a goodreads scraper for [discord.py](https://github.com/Rapptz/discord.p
   - ratings 
   - total ratings
   - page count
-  - book cover url
+  - book cover
 
 ## Installing
 * `git clone https://github.com/udaymehta/goodreads-scraper.git`
