@@ -11,7 +11,6 @@ bot = commands.Bot(command_prefix='.')
 BASE_URL= 'https://www.goodreads.com'
 
 
-# A simple on ready function
 @bot.event
 async def on_ready():
     print(
@@ -26,7 +25,6 @@ async def search(ctx, *, bookname):
     user = ctx.author
     findingmsg = await ctx.send(f"{user.mention} Finding Book, just a sec. :alarm_clock:")
     
-    # Defining some important variables
     name = bookname.split(" ")
     name = "+".join(name)
     source = f"https://www.goodreads.com/search?q={name}&qid="
@@ -34,19 +32,16 @@ async def search(ctx, *, bookname):
     strygrph_url = f"https://app.thestorygraph.com/browse?utf8=%E2%9C%93&button=&search_term={name}"
     google_url = f"https://www.google.com/search?tbm=bks&q={name}"
     
-    #first request
     req = requests.get(source)    
     soup = BeautifulSoup(req.text,'lxml')  
     first_results = soup.find('a', class_='bookTitle')
     link = first_results.get('href')
     bookurl = BASE_URL + link
     
-    #second request after getting the bookurl
     bookreq = requests.get(bookurl)
     bsoup = BeautifulSoup(bookreq.text, 'lxml')
     
     
-    # Using try except block is necessary as it it check if the book objects is there or no there.
     try:
         booktitle = bsoup.find('h1', {'id' : 'bookTitle'}).text.strip()
     except:
@@ -69,10 +64,7 @@ async def search(ctx, *, bookname):
         isbn = str(bsoup.find("meta", {"property": "books:isbn"}).get("content"))  
     except:
         isbn = "Unknown"
-        
-    # Some old classic books doesnt have isbn and its denoted as null in html, so we have check it!
-    if isbn == 'null':
-        isbn = "Unknown"
+
     try:
         ratings = bsoup.find('span', {'itemprop': 'ratingValue'}).text.strip()
     except:
@@ -85,11 +77,11 @@ async def search(ctx, *, bookname):
         reviews = bsoup.find('meta', {'itemprop':'reviewCount'}).get('content')
     except:
         reviews = 'Unknown'
+
+    if isbn == 'null':
+        isbn = "Unknown"
         
-        
-        
-    # A simple embed with all the necessary items
-    #============================================
+
     em = discord.Embed(
         title= f":books: {booktitle} by __{authorname}__",
         colour=user.colour,
@@ -113,13 +105,8 @@ async def search(ctx, *, bookname):
     em.set_footer(text="Bot by Sedulous 💚")
     
     await findingmsg.edit(content=f"Found The Book {user.mention}", embed=em)
-    #============================================
-    
 
-    
-    
-    # This is optional part.
-    #=======================
+
     DELETE_EMOJI = "🗑️"
     PAGINATE_EMOJIS = [DELETE_EMOJI]
     for emoji in PAGINATE_EMOJIS:
@@ -148,27 +135,16 @@ async def search(ctx, *, bookname):
                 f"Sorry {user.mention},`Only the user who called the command can delete the message`")
             print(f"{user.name} tried to delete the command.")
             await errmsg.delete(delay=5.0)
-    # ends here
-    #=======================
-    
-    
-    
-# This is on_command_error function to avoid errors
-#==================================================
+
+
 @bot.event
 async def on_command_error(ctx, error):
 
-    # This prevents any commands with local handlers being handled here in on_command_error.
     if hasattr(ctx.command, 'on_error'):
         return
 
     ignored = (commands.CommandNotFound,)
-
-    # Allows us to check for original exceptions raised and sent to CommandInvokeError.
-    # If nothing is found. We keep the exception passed to on_command_error.
     error = getattr(error, 'original', error)
-
-    # Anything in ignored will return and prevent anything happening.
     if isinstance(error, ignored):
         return
 
@@ -192,7 +168,6 @@ async def on_command_error(ctx, error):
         await errmsg4.delete(delay=5.0)
         
     else:
-        # All other Errors not returned come here. And we can just print the default TraceBack.
         print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 #==================================================
